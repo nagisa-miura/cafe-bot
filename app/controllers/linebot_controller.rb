@@ -33,15 +33,32 @@ class LinebotController < ApplicationController
         
         #位置情報送信時
         when Line::Bot::Event::MessageType::Location
-          message = {
+           message = {
             type: 'text',
-            text: event.message['text']
-          }
-          client.reply_message(event['replyToken'], message)
+            text: return_location_height(event.message)
+            }
+        else
+            message = {
+            type: 'text',
+            text: "メッセージか位置情報を送ってね"
+        }
         end
+        @client.reply_message(event['replyToken'], message)
+        render :nothing => true, status: :ok
       end
     }
 
-    head :ok
+    private
+    
+    def return_location_height(message)
+        ret_msg = message['address'] + "の標高は"
+        lat = message['latitude']
+        lon = message['longitude']
+        body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
+        doc = REXML::Document.new(body)
+        ret_msg += doc.elements['result/height'].text + "mです"
+        ret_msg
+    end
+
   end
 end
