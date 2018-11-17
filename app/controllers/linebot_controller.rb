@@ -2,15 +2,12 @@ require 'line/bot'
 require 'open-uri'
 require 'rexml/document'
 
-class LinebotController < ApplicationController
+class WebhookController < ApplicationController
   protect_from_forgery with: :null_session
-   
-  def client
-    @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
-    }
-  end
+  before_action :set_line_client
+
+  CHANNEL_SECRET = '3dc7c9a5de885798c35da460eaf7992a'
+  CHANNEL_ACCESS_TOKEN = '5aZV96SXXI2N9JfIgkOE6/rG7cqVMedRaYs0/5039DSSTWy1qHYVHL6WMCfRUtiKZyj4XFqe/mGttPeYnYA2L3P92FId5LOkSxOiVYQLuaUZ//e5PXgPUkcunzvLR8jRQBCFVdqU6kdvbCCqwp0iBwdB04t89/1O/w1cDnyilFU='
 
   def callback
     body = request.body.read
@@ -58,6 +55,13 @@ class LinebotController < ApplicationController
     doc = REXML::Document.new(body)
     ret_msg += doc.elements['result/height'].text + "mです"
     ret_msg
+  end
+
+  def set_line_client
+    @client ||= Line::Bot::Client.new { |config|
+      config.channel_secret = CHANNEL_SECRET
+      config.channel_token = CHANNEL_ACCESS_TOKEN
+    }
   end
 
 end
