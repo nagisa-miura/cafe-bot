@@ -1,5 +1,7 @@
 class LinebotController < ApplicationController
-  require 'line/bot' 
+  require 'line/bot'
+  require 'open-uri'
+  require 'rexml/document'
 
   protect_from_forgery :except => [:callback]
 
