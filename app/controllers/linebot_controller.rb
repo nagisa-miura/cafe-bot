@@ -1,6 +1,8 @@
-class LinebotController < ApplicationController
-  require 'line/bot' 
+require 'line/bot'
+require 'open-uri'
+require 'rexml/document'
 
+class LinebotController < ApplicationController
   protect_from_forgery :except => [:callback]
 
   def client
@@ -30,10 +32,10 @@ class LinebotController < ApplicationController
             text: event.message['text']
           }
           client.reply_message(event['replyToken'], message)
-        
+        end
         #位置情報送信時
         when Line::Bot::Event::MessageType::Location
-           message = {
+          message = {
             type: 'text',
             text: return_location_height(event.message)
             }
@@ -41,8 +43,7 @@ class LinebotController < ApplicationController
             message = {
             type: 'text',
             text: "メッセージか位置情報を送ってね"
-        }
-        end
+            }
         @client.reply_message(event['replyToken'], message)
         render :nothing => true, status: :ok
       end
