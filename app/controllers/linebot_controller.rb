@@ -48,13 +48,23 @@ class LinebotController < ApplicationController
   end
   
   def return_location_height(message)
-    lat_msg = message['latitude']
+    ret_msg = message['address'] + "の標高は"
+    lat = message['latitude']
     lon = message['longitude']
     body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
     doc = REXML::Document.new(body)
     ret_msg += doc.elements['result/height'].text + "mです"
-    lat_msg
   end
+  
+  # def return_location_height(message)
+  #   ret_msg = message['address'] + "の標高は"
+  #   lat = message['latitude']
+  #   lon = message['longitude']
+  #   body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
+  #   doc = REXML::Document.new(body)
+  #   ret_msg += doc.elements['result/height'].text + "mです"
+  #   ret_msg
+  # end
 
   def set_line_client
     @client ||= Line::Bot::Client.new { |config|
