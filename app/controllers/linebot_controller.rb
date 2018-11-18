@@ -39,14 +39,14 @@ class LinebotController < ApplicationController
             type: 'text',
             text: "end1"
            }
-           message = {
-            type: 'text',
-            text: event.message 
-           }
-           message = {
-            type: 'text',
-            text: "end2"
-           }
+          # message = {
+          #   type: 'text',
+          #   text: event.message 
+          # }
+          # message = {
+          #   type: 'text',
+          #   text: "end2"
+          # }
         else
             message = {
             type: 'text',
