@@ -37,8 +37,7 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Location
            message = {
             type: 'text',
-            text: '位置情報受信'
-            # text: return_location_height(event.message)
+            text: return_location_height(event.message)
             }
         else
             message = {
@@ -54,13 +53,14 @@ class LinebotController < ApplicationController
     private
     
     def return_location_height(message)
-        ret_msg = message['address'] + "の標高は"
-        lat = message['latitude']
-        lon = message['longitude']
-        body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
-        doc = REXML::Document.new(body)
-        ret_msg += doc.elements['result/height'].text + "mです"
-        ret_msg
+        message = {type: 'text', text: "位置情報test"}
+        # ret_msg = message['address'] + "の標高は"
+        # lat = message['latitude']
+        # lon = message['longitude']
+        # body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
+        # doc = REXML::Document.new(body)
+        # ret_msg += doc.elements['result/height'].text + "mです"
+        # ret_msg
     end
 
     head :ok
