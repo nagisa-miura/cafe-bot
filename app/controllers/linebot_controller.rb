@@ -37,7 +37,8 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Location
            message = {
             type: 'text',
-            text: return_location_height(event.message)
+            text: '位置情報受信'
+            # text: return_location_height(event.message)
             }
         else
             message = {
