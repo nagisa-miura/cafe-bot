@@ -2,7 +2,7 @@ require 'line/bot'
 require 'open-uri'
 require 'rexml/document'
 
-class WebhookController < ApplicationController
+class LinebotController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :set_line_client
 
