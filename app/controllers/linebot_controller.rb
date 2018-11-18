@@ -36,17 +36,17 @@ class LinebotController < ApplicationController
         #位置情報送信時
         when Line::Bot::Event::MessageType::Location
            message = {
-             type: 'text',
-             text: "start"
+            type: 'text',
+            text: "end1"
            }
            message = {
             type: 'text',
             text: event.message 
-            }
-          message = {
+           }
+           message = {
             type: 'text',
-            text: "end"
-          }
+            text: "end2"
+           }
         else
             message = {
             type: 'text',
