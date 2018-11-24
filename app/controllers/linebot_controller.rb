@@ -1,6 +1,8 @@
 require 'line/bot'
 require 'open-uri'
+require 'json'
 require 'rexml/document'
+
 
 class LinebotController < ApplicationController
   protect_from_forgery with: :null_session
@@ -47,13 +49,12 @@ class LinebotController < ApplicationController
     end
   end
   
-  def return_location_height(message)
-    ret_msg = message['address'] + "の標高は"
-    lat = message['latitude']
-    lon = message['longitude']
-    body = open("http://lab.uribou.net/ll2h/?ll=#{lat},#{lon}", &:read)
-    doc = REXML::Document.new(body)
-    ret_msg += doc.elements['result/height'].text + "mです"
+  # ぐるなびAPIでレストランを検索
+  def get_restaurants lat, long, requested_category_code
+    # 緯度,経度,カテゴリー,範囲を指定
+    params = "?keyid=#{GNAVI_KEYID}&latitude=#{lat}&longitude=#{long}&category_l=#{requested_category_code}&range=3"
+    restaurants = JSON.parse(RestClient.get GNAVI_SEARCHAPI + params)
+    restaurants
   end
   
   # def return_location_height(message)
@@ -65,6 +66,11 @@ class LinebotController < ApplicationController
   #   ret_msg += doc.elements['result/height'].text + "mです"
   #   ret_msg
   # end
+
+
+
+
+
 
   def set_line_client
     @client ||= Line::Bot::Client.new { |config|
